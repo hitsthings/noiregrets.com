@@ -1,0 +1,37 @@
+{namespace soy.widget}
+
+/**
+ * @param? action
+ * @param? method
+ * @param? errors
+ * @param? values
+ * @param? fields
+ * @param? fieldsHtml
+ * @param buttonsHtml
+*/
+{template .form}
+        <form action="{$action ? $action : ''}" method="{$method ? $method : 'POST'}">
+            {if $errors and $errors['global']}
+                <ul class="errors">
+                    {foreach $error in $errors['global']}
+                        <li>{$error}</li>
+                    {/foreach}
+                </ul>
+            {/if}
+            {if $fields}
+                {foreach $field in $fields}
+                    {call soy.widget.form.field data="$field"}
+                        {param value : $field.value ? $field.value : $values ? $values[$field.id] : null /}
+                        {param errors: $errors ? $errors[$field.id] : null /}
+                    {/call}
+                {/foreach}
+            {/if}
+            {if $fieldsHtml}
+                {$fieldsHtml|noAutoescape}
+            {/if}
+            <div class="buttons">
+                {$buttonsHtml|noAutoescape}
+            </div>
+        </form>
+    </div>
+{/template}

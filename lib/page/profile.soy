@@ -1,0 +1,70 @@
+{namespace soy.page}
+
+/**
+ * @param? errors
+ * @param username
+ * @param email
+*/
+{template .profile}
+    {literal}
+    <style>
+        #edit-email {
+            display: inline-block;
+            padding-left: 1em;
+        }
+    </style>
+    {/literal}
+    <div class="form-layout profile">
+        <h1>Profile</h1>
+        {call soy.widget.form}
+            {param errors : $errors /}
+            {param fields : [
+                [
+                    'id' : 'username',
+                    'labelText' : 'Username',
+                    'type' : 'value',
+                    'value' : $username
+                ],
+                [
+                    'id' : 'email',
+                    'labelText' : 'Email',
+                    'type' : 'value',
+                    'value' : $email,
+                    'valuePlaceholderHtml' : '<a href="#" id="edit-email">' + ($email ? 'Change it?' : 'Add one?') +'</a>'
+                ]
+            ] /}
+            {param buttonsHtml}
+            <input type="submit" id="update-profile" class="hidden" value="Update" />
+            {/param}
+        {/call}
+    </div>
+    {literal}
+    <script>
+        if (document.getElementById('edit-email')) {
+            document.getElementById('edit-email').onclick = function (e) {
+                e = e || window.event;
+
+                e.target.parentNode.className += " invisible";
+
+                var input = document.createElement('input');
+                input.type = 'email';
+                input.name = 'email';
+
+                var valNode = document.getElementById('email');
+                input.value = valNode.childNodes[0].data;
+
+                valNode.parentNode.insertBefore(input, valNode);
+                valNode.parentNode.removeChild(valNode);
+
+                document.getElementById('update-profile').className = '';
+
+                input.focus();
+                input.select();
+
+                e.preventDefault && e.preventDefault();
+                return false;
+            };
+        }
+    </script>
+    {/literal}
+{/template}

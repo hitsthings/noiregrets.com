@@ -1,0 +1,85 @@
+{namespace soy}
+
+/**
+*/
+{template .planner}
+{/template}
+
+/**
+ */
+{template .createPlanForm}
+	<form method="post" action="" id="create_form">
+		<div class="field">
+			<label for="plan_name">Subject</label>
+			<input type="text" name="plan_name" id="plan_name" />
+		</div>
+		<div class="field">
+			<label for="email_subject">Subject</label>
+			<input type="text" name="subject" id="email_subject" />
+		</div>
+		<div class="field">
+			<label for="email_body">Body</label>
+			<textarea name="body" id="email_body" />
+		</div>
+		<div class="field">
+			<label for="frequency">Frequency</label>
+			<select id="frequency" name="frequency">
+				<option value="ONCE" selected>Once</option>
+				<option value="HOURLY">Hourly</option>
+				<option value="DAILY">Daily</option>
+				<option value="WEEKLY">Weekly</option>
+				<option value="MONTHLY">Monthly</option>
+				<option value="YEARLY">Yearly</option>
+			</select>
+		</div>
+		<div id="once_fields">
+			<div class="field">
+				<label for="once_start">Sometime after</label>
+				<input type="text" class="timepicker" id="once_start" name="once_start" />
+			</div>
+			<div class="field">
+				<label for="once_end">But before</label>
+				<input type="text" class="timepicker" id="once_end" name="once_end" />
+			</div>
+		</div>
+		<div class="actions">
+			<input type="submit" value="Create Plan" name="create_plan" />
+			<a class="cancel">Cancel</a>
+		</div>
+	</form>
+	{literal}
+	<script>
+		$('.timepicker').datetimepicker();
+	
+		document.getElementById('create_form').addEventListener('submit', function(e) {
+			var planner = require('planner');
+		
+			var planName = document.getElementById('plan_name').value,
+				subject = document.getElementById('email_subject').value,
+				body = document.getElementById('email_body').value;
+				
+			var start = new Date(document.getElementById('once_start').value),
+				end = new Date(document.getElementById('once_end').value);
+				
+			planner.createPlan(planName, planner.Email.create(subject, body),
+				Frequency.ONCE.getScheduleBuilder().addTimespan(start, end).build())
+			
+			e.preventDefault();
+		});
+	</script>
+	{/literal}
+{/template}
+
+/**
+ * @param parentNs
+ */
+{template .onceOptions}
+	<div class="field">
+		<label for="{$parentNs}_start_date">Sent after</label>
+		<input type="text" id="{$parentNs}_start_date" name="{$parentNs}_start_date" />
+	</div>
+	<div class="field">
+		But <label for="{$parentNs}_end_date">sent before</label>
+		<input type="text" id="{$parentNs}_end_date" name="{$parentNs}_end_date" />
+	</div>
+{/template}

@@ -1,0 +1,62 @@
+{namespace soy.page}
+
+/**
+ * @param appName
+ * @param appUrl
+ * @param? email
+ * @param? emailConfirmed
+*/
+{template .emailRequired}
+    {call soy.layout}
+        {param body}
+            <h1>
+                {if not $email or not $emailConfirmed}
+                    {$appName} needs your email 
+                {else}
+                    All good!
+                {/if}
+            </h1>
+            <p>
+                {if not $email}
+                    To use {$appName}, you need to provide us with an email address. You can do this in{sp}
+                    your <a href="/profile">profile</a>.
+                {elseif not $emailConfirmed}
+                    Your email address {$email} hasn't been verified, and {$appName} won't work without it. Need us to{sp}
+                    <a id="resend_verification" href="#">send another verification email</a>? 
+                {else}
+                    You have a valid email address ({$email}) on file. Head on over to <a href="{$appUrl}">{$appName}</a>.
+                {/if}
+            <p>
+        {/param}
+        {param bottomHtml}
+            {literal}
+            <script>
+                var sending = false;
+                $('#resend_verification').click(function(e) {
+                    e.preventDefault();
+
+                    if (sending) {
+                        return;
+                    }
+                    sending = true;
+
+                    var status = $('<p>Sending...</p>');
+                    $('#main').append(status)
+
+                    Mailer.sendVerification().done(function() {
+                        status.text('Sent.').delay(1000).fadeOut('fast', function() {
+                            status.remove();
+                            sending = false;
+                        });
+                    }).fail(function() {
+                        status.text('Could not send email.').delay(1000).fadeOut('fast', function() {
+                            status.remove();
+                            sending = false;
+                        });
+                    });
+                });
+            </script>
+            {/literal}
+        {/param}
+    {/call}
+{/template}

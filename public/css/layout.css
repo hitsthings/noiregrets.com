@@ -1,0 +1,28 @@
+#header {
+    display: table;
+    position: relative;
+    width: 100%;
+}
+#header > div {
+    display: table-cell;
+    text-align: center;
+}
+
+#header > div:first-child {
+    text-align: left;
+}
+#header > div:last-child {
+    text-align: right;
+}
+
+form > .field > .value {
+    min-width : 200px;
+    display: inline-block;
+}
+
+.hidden {
+    display: none !important;
+}
+.invisible {
+    visibility: hidden;
+}

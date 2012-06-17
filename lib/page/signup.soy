@@ -1,0 +1,38 @@
+{namespace soy.page}
+
+/**
+ * @param? errors
+ * @param? values
+*/
+{template .signup}
+    <div class="form-layout">
+        {call soy.widget.form}
+            {param errors : $errors /}
+            {param values : $values /}
+            {param fields : [
+                [
+                    'id' : 'username',
+                    'labelText' : 'Username',
+                    'type' : 'text',
+                    'isRequired': true,
+                    'autofocus' : true
+                ],
+                [
+                    'id' : 'password',
+                    'labelText' : 'Password',
+                    'type' : 'password',
+                    'isRequired': true
+                ],
+                [
+                    'id' : 'email',
+                    'labelText' : 'Email',
+                    'type' : 'email',
+                    'isRequired': false
+                ]
+            ] /}
+            {param buttonsHtml}
+                <input type="submit" value="Sign up" />
+            {/param}
+        {/call}
+    </div>
+{/template}

@@ -1,0 +1,31 @@
+form {
+	margin: 32px 0 0;
+}
+
+fieldset {
+	border: none;
+	
+}
+
+fieldset > legend {
+  position: absolute;
+  clip: rect(0, 0, 0, 0);
+}
+
+.field,
+.buttons {
+	display: table;
+	margin-top: 0.5em;;
+}
+
+form .field > label {
+	display: table-cell;
+	width: 100px;
+	padding-right: 10px;
+	text-align: right;
+}
+form .field > input,
+form .field > textarea,
+form .field > select {
+	display: table-cell;
+}

@@ -1,0 +1,16 @@
+{namespace soy.page}
+
+/**
+ * @param succeeded
+ * @param email
+ * @param? reason
+ * @param? showSignup
+*/
+{template .emailConfirmation}
+    <h1>{$succeeded ? 'Email verified' : 'Email NOT verified'}</h1>
+    {if $reason}
+        <p>{$reason}{if $showSignup} Did you want to <a href="/signup">Sign up</a>?{/if}</p>
+    {elseif $succeeded}
+        <p>You can now use the address '{$email}' with any of the apps.</p>
+    {/if}
+{/template}

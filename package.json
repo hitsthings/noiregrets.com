@@ -1,0 +1,45 @@
+{
+  "name": "noiregrets.com",
+  "description": "noiregrets.com",
+  "version": "0.1.0",
+  "homepage": "https://github.com/hitsthings/noiregrets.com",
+  "author": {
+    "name": "Adam Ahmed",
+    "email": "hitsthings@gmail.com",
+    "url": "noiregrets.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/hitsthings/noiregrets.com.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hitsthings/noiregrets.com/issues"
+  },
+  "licenses": [
+    {
+      "type": "MIT",
+      "url": "https://github.com/hitsthings/noiregrets.com/blob/master/LICENSE-MIT"
+    }
+  ],
+  "main": "lib/noiregrets.com",
+  "engines": {
+    "node": "~0.6.15"
+  },
+  "scripts": {
+    "test": "grunt test"
+  },
+  "dependencies": {
+    "express" : "2.5.9",
+    "passport" : "~0.1.9",
+    "passport-local" : "~0.1.3",
+    "mongoose" : "~2.6.5",
+    "nodemailer" : "~0.3.20",
+    "markdown" : "~0.4.0"
+  },
+  "devDependencies": {
+    "grunt": "~0.3.9",
+    "grunt-clean": "~0.2.1",
+    "grunt-soy" : "~0.3.0"
+  },
+  "keywords": []
+}

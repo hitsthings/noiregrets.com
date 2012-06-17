@@ -1,0 +1,38 @@
+{namespace soy.page}
+
+/**
+ * @param? errors
+ * @param? values
+ * @param? next
+*/
+{template .login}
+    <div class="form-layout">
+        {call soy.widget.form}
+            {param errors : $errors /}
+            {param values : $values /}
+            {param fields : [
+                [
+                    'id' : 'username',
+                    'labelText' : 'Username',
+                    'type' : 'text',
+                    'isRequired': true,
+                    'autofocus' : true
+                ],
+                [
+                    'id' : 'password',
+                    'labelText' : 'Password',
+                    'type' : 'password',
+                    'isRequired': true
+                ]
+            ] /}
+            {param fieldsHtml}
+                {if $next}
+                    <input type="hidden" name="next" value="{$next}" />
+                {/if}
+            {/param}
+            {param buttonsHtml}
+                <a href="/signup">Sign up</a><input type="submit" value="Log in" />
+            {/param}
+        {/call}
+    </div>
+{/template}

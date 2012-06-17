@@ -1,0 +1,25 @@
+{namespace soy.widget}
+
+/**
+ * @param id
+ * @param url
+ * @param title
+ * @param bodyHtml
+ * @param published
+ * @param? publishDateISO8601
+ * @param? lastEditDateISO8601
+ */
+{template .post}
+	<article data-id="{$id}"
+		{if not $published} data-status="draft"{/if}
+		{if $publishDateISO8601} data-publish-date="{$publishDateISO8601}"{/if}
+		{if $lastEditDateISO8601} data-edit-date="{$lastEditDateISO8601}"{/if}>
+		<header>
+			<h1><a href="{$url}">{$title}</a></h1>
+			<dl class="metadata hidden"></dl>
+		</header>
+		<section>
+			{$bodyHtml|noAutoescape}
+		</section>
+	</article>
+{/template}

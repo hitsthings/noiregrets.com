@@ -1,0 +1,35 @@
+{namespace soy.page}
+
+/**
+ * @param posts
+ */
+{template .posts}
+	<div class="posts-layout">
+		<h1>Blog</h1>
+
+		{foreach $post in $posts}
+			{call soy.widget.post data="$post"}
+				{param bodyHtml: $post.snippetHtml/}
+			{/call}
+			<aside>
+				{call soy.widget.commentCount}
+					{param postUrl: $post.url /}
+				{/call}
+			</aside>
+		{/foreach}
+	</div>
+	<script type="text/javascript">
+	{literal}
+		/* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+		var disqus_shortname = 'noiregrets'; // required: replace example with your forum shortname
+
+		/* * * DON'T EDIT BELOW THIS LINE * * */
+		(function () {
+		    var s = document.createElement('script'); s.async = true;
+		    s.type = 'text/javascript';
+		    s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+		    (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+		}());
+	{/literal}
+	</script>
+{/template}
