@@ -27,6 +27,7 @@ conf.defaults.port = privateConf.port;
 conf.defaults.mail.transport.auth.user = privateConf.mail_username;
 conf.defaults.mail.transport.auth.pass = privateConf.mail_password;
 conf.defaults.mail.fromAddress         = privateConf.fromAddress;
+conf.defaults.recaptcha                = privateConf.recaptcha;
 
 setupDB(function() {
     console.log('Configuring NoirEgrets app...');

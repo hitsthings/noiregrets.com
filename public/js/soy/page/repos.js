@@ -8,11 +8,11 @@ if (typeof soy.page == 'undefined') { soy.page = {}; }
 soy.page.repos = function(opt_data, opt_sb, opt_ijData) {
   var output = opt_sb || new soy.StringBuilder();
   output.append('\n<style>\n.github-widget {\n    margin-top: 30px;\n}\n\n.github-widget .link {\n    display:none;\n}\n</style>\n<h1>Libraries and Tools</h1>');
-  var repoList107 = ['soy-grunt-task', 'zoneinfo-server'];
-  var repoListLen107 = repoList107.length;
-  for (var repoIndex107 = 0; repoIndex107 < repoListLen107; repoIndex107++) {
-    var repoData107 = repoList107[repoIndex107];
-    soy.page.repo({repoName: repoData107}, output, opt_ijData);
+  var repoList122 = ['soy-grunt-task', 'zoneinfo-server'];
+  var repoListLen122 = repoList122.length;
+  for (var repoIndex122 = 0; repoIndex122 < repoListLen122; repoIndex122++) {
+    var repoData122 = repoList122[repoIndex122];
+    soy.page.repo({repoName: repoData122}, output, opt_ijData);
   }
   return opt_sb ? '' : output.toString();
 };

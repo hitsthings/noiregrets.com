@@ -3,6 +3,9 @@
 /**
  * @param? errors
  * @param? values
+ * @param? showCaptcha
+ * @param? recaptchaKey
+ * @param? captchaError
  * @param? next
 */
 {template .login}
@@ -28,6 +31,17 @@
             {param fieldsHtml}
                 {if $next}
                     <input type="hidden" name="next" value="{$next}" />
+                {/if}
+                {if $showCaptcha}
+                    <script type="text/javascript" src="http://www.google.com/recaptcha/api/challenge?k=
+                                {$recaptchaKey}{if $captchaError}&amp;error={$captchaError}{/if}"></script>
+                    <noscript>
+                        <iframe src="http://www.google.com/recaptcha/api/noscript?k=
+                                {$recaptchaKey}{if $captchaError}&amp;error={$captchaError}{/if}"
+                            height="300" width="500" frameborder="0"></iframe><br />
+                        <textarea name="recaptcha_challenge_field" rows="3" cols="40"></textarea>
+                        <input type="hidden" name="recaptcha_response_field" value="manual_challenge" />
+                    </noscript>
                 {/if}
             {/param}
             {param buttonsHtml}

@@ -12,3 +12,8 @@ exports.secret = "not so secret";
 exports.domain = "localhost";
 exports.port   = "3000";
 exports.schema = "http";
+
+exports.recaptcha = {
+	privateKey : '6Lc95dISAAAAAOTPOTHsm9hfPoIP7dm38spxyhwT',
+	publicKey : '6Lc95dISAAAAABAVsibfmw27WOn0wn7g8-vpiUg6'
+};

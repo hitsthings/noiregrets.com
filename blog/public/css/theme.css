@@ -37,7 +37,7 @@ article > section > h1 {
 }
 
 article + aside {
-	margin-top: 30px;
+	margin-top: 64px;
 }
 
 .posts-layout article + aside {
