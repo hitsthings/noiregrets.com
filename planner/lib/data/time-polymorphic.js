@@ -10,7 +10,7 @@ var singletonList = require('./mongo-helper').singletonList;
 /* Schemas */
 
 var CalendarValueSchema = exports.CalendarValueSchema = new Schema({
-    calendarType  : { type : String, enum : [ 'hour', 'day', 'weekday', 'month', 'year' ], required: true },
+    calendarType  : { type : String, 'enum' : [ 'hour', 'day', 'weekday', 'month', 'year' ], required: true },
     calendarIndex : { type : Number, required: true }
 });
 
@@ -36,16 +36,17 @@ var AbsoluteTimeSchema = exports.AbsoluteTimeSchema = new Schema({
 });
 
 var RelativeTimeSchema = exports.RelativeTimeSchema = new Schema({
-    _anchor : [ Time ],
-    _offset : [ TimeOffset ]
+    _offset : [ TimeOffsetSchema ]
 });
-singletonList(RelativeTimeSchema, '_anchor', 'anchor');
 singletonList(RelativeTimeSchema, '_offset', 'offset');
 
 var TimeSchema = exports.TimeSchema = new PolymorphicSchema({
     AbsoluteTime : AbsoluteTimeSchema,
     RelativeTime : RelativeTimeSchema
 });
+
+RelativeTimeSchema.add({ _anchor : [ TimeSchema ] });
+singletonList(RelativeTimeSchema, '_anchor', 'anchor');
 
 var TimeRangeSchema = exports.TimeRangeSchema = new Schema({
     _startTime : [ TimeSchema ],
@@ -65,7 +66,7 @@ var AbsoluteTimeOffset = exports.AbsoluteTimeOffset =
 var CalendarTimeOffset = exports.CalendarTimeOffset =
         mongoose.model('CalendarTimeOffset', CalendarTimeOffsetSchema);
 
-var TimeOffset = exports.TimeOffset =
+exports.TimeOffset =
         mongoose.model('TimeOffset', TimeOffsetSchema);
 
 
@@ -75,7 +76,7 @@ var AbsoluteTime = exports.AbsoluteTime =
 var RelativeTime = exports.RelativeTime =
         mongoose.model('RelativeTime', RelativeTimeSchema);
 
-var Time = exports.Time =
+exports.Time =
         mongoose.model('Time', TimeSchema);
 
 

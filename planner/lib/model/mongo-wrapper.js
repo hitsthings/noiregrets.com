@@ -33,16 +33,6 @@ var push = Array.prototype.push,
     splice = Array.prototype.splice,
     slice = Array.prototype.slice,
     map = Array.prototype.map;
-function wrapArray(mongoArray, wrap, unwrap) {
-
-    if (!mongoArray) {
-        return mongoArray;
-    }
-
-    var items = mongoArray.map(wrap);
-
-    return mongoProxyArray(items,mongoArray,wrap, unwrap);
-}
 function mongoProxyArray(items, mongoArray, wrap, unwrap) {
     items.push = function() {
         mongoArray.push.apply(mongoArray, map.call(arguments, unwrap));
@@ -74,7 +64,19 @@ function mongoProxyArray(items, mongoArray, wrap, unwrap) {
     return items;
 }
 
+function wrapArray(mongoArray, wrap, unwrap) {
+
+    if (!mongoArray) {
+        return mongoArray;
+    }
+
+    var items = mongoArray.map(wrap);
+
+    return mongoProxyArray(items,mongoArray,wrap, unwrap);
+}
+
 function wrapProp(tree, prop, subWrap, wrapHolder) {
+    var get, set;
     if (tree[prop] instanceof Array) {
         get = function() {
             if (wrapHolder[prop]) {
@@ -139,83 +141,86 @@ function toRawDescriptor(descriptor, subWrapMap) {
     return descriptor;
 }
 
-function mongoDelegateCtor(ctor, mongoModel, customDescriptors, subWrapMap, args) {
-    var subWrap, prop, tree, get, set;
+function mongoDelegateCtor(Ctor, MongoModel, customDescriptors, subWrapMap, args) {
+    var subWrap, prop, tree;
 
-    tree = mongoModel.schema.tree;
+    tree = MongoModel.schema.tree;
 
-    this._mongo = new mongoModel(toRawDescriptor(args[0], subWrapMap));
+    this._mongo = new MongoModel(toRawDescriptor(args[0], subWrapMap));
 
     subWrapMap = subWrapMap || {};
     var wrapHolder = {};
 
     for (prop in tree) {
         if (tree.hasOwnProperty(prop) && prop in subWrapMap && !(prop in customDescriptors)) {
-            var subWrap = subWrapMap[prop] === 'self' ?
-                    ctor :
+            subWrap = subWrapMap[prop] === 'self' ?
+                    Ctor :
                     subWrapMap[prop];
             wrapProp.call(this,
                 tree, prop, subWrap, wrapHolder);
         }
     }
 }
-function mongoDelegateTransform(ctor, mongoModel, customDescriptors, subWrapMap) {
+function mongoDelegateTransform(Ctor, MongoModel, customDescriptors, subWrapMap) {
     function fromMongo(mongo) {
-        var s = new ctor();
+        var s = new Ctor();
         s._mongo = mongo;
         return s;
     }
     function toMongo(thing) {
         return thing._mongo;
     }
-    ctor._fromMongo = fromMongo;
-    ctor._toMongo = toMongo;
-    ctor._mongoModel = mongoModel;
+    Ctor._fromMongo = fromMongo;
+    Ctor._toMongo = toMongo;
+    Ctor._mongoModel = MongoModel;
 
-    ctor.find = wrapQuery(mongoModel, 'find', fromMongo);
-    ctor.findOne = wrapQuery(mongoModel, 'findOne', fromMongo);
-    ctor.findById = wrapQuery(mongoModel, 'findById', fromMongo);
+    Ctor.find = wrapQuery(MongoModel, 'find', fromMongo);
+    Ctor.findOne = wrapQuery(MongoModel, 'findOne', fromMongo);
+    Ctor.findById = wrapQuery(MongoModel, 'findById', fromMongo);
 
-    ctor.prototype.save = function() {
+    Ctor.prototype.save = function() {
         return this._mongo.save.apply(this._mongo, arguments);
     };
-    ctor.prototype.remove = function() {
+    Ctor.prototype.remove = function() {
         return this._mongo.remove.apply(this._mongo, arguments);
     };
 
     var subWrap, prop, tree, get, set;
 
-    tree = mongoModel.schema.tree;
+    tree = MongoModel.schema.tree;
 
-    this._mongo = new mongoModel();
+    this._mongo = new MongoModel();
 
     subWrapMap = subWrapMap || {};
     var wrapHolder = {};
 
+    function defineProp(prop) {
+        if (prop in customDescriptors) {
+            Object.defineProperty(Ctor.prototype, prop,
+                customDescriptors[prop]);
+        } else if (!(prop in subWrapMap)) {
+            Object.defineProperty(Ctor.prototype, prop, {
+                enumerable : true,
+                get : function () { return this._mongo[prop]; },
+                set : function (val) { this._mongo[prop] = val; }
+            });
+        }
+    }
     for (prop in tree) {
         if (tree.hasOwnProperty(prop)) {
-            if (prop in customDescriptors) {
-                Object.defineProperty(ctor.prototype, prop,
-                    customDescriptors[prop]);
-            } else if (!(prop in subWrapMap)) {
-                Object.defineProperty(ctor.prototype, prop, {
-                    enumerable : true,
-                    get : function () { return this._mongo[prop]; },
-                    set : function (val) { this._mongo[prop] = val; }
-                });
-            }
+            defineProp(prop);
         }
     }
 }
 
-module.exports = function wrap(mongoModel, customDescriptors, subWrapMap, initFn) {
-    function model() {
-        mongoDelegateCtor.call(this, model, mongoModel, customDescriptors, subWrapMap, arguments);
+module.exports = function wrap(MongoModel, customDescriptors, subWrapMap, initFn) {
+    function Model() {
+        mongoDelegateCtor.call(this, Model, MongoModel, customDescriptors, subWrapMap, arguments);
         if (initFn) {
             initFn.apply(this, arguments);
         }
     }
-    mongoDelegateTransform(model, mongoModel, customDescriptors, subWrapMap);
+    mongoDelegateTransform(Model, MongoModel, customDescriptors, subWrapMap);
 
-    return model;
+    return Model;
 };

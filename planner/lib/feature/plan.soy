@@ -1,0 +1,20 @@
+{namespace soy.feature}
+
+/**
+ * @param taskSummary
+ * @param taskDescription
+ * @param scheduleJSON
+ * @param scheduleDescription
+ * @param? expanded
+*/
+{template .plan}
+	<article class="plan{if not $expanded} collapsed{/if}">
+		<header><h1>{$taskSummary}</h1></header>
+		<section class="schedule" data-json="{$scheduleJSON}">
+			{$scheduleDescription}
+		</section>
+		<section class="message">
+			{$taskDescription}
+		</section>
+	</article>
+{/template}

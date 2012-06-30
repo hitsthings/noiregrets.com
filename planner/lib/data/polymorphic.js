@@ -1,3 +1,4 @@
+/*jshint proto:true */
 /** NOTE: This module is currently unused. **/
 
 var mongoose = require('mongoose');
@@ -28,14 +29,14 @@ module.exports = function PolymorphicSchema(schemasByModelName, modelPrefix, typ
         names.push(modelName);
 
         var typeDescriptor = {};
-        typeDescriptor[typeProperty] = { type: String, default: modelName };
+        typeDescriptor[typeProperty] = { type: String, 'default': modelName };
         schema.add(typeDescriptor);
     });
 
     abstractSchemaDescriptor = {};
     abstractSchemaDescriptor[typeProperty] = {
         type: String,
-        enum: names
+        'enum': names
     };
 
     abstractSchema = new Schema(abstractSchemaDescriptor, { strict: false });
@@ -100,5 +101,5 @@ module.exports = function PolymorphicSchema(schemasByModelName, modelPrefix, typ
     });
 
     return abstractSchema;
-}
+};
 

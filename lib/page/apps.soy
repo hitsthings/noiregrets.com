@@ -1,0 +1,26 @@
+{namespace soy.page}
+
+/**
+ * @param apps
+*/
+{template .apps}
+	<h1>Apps</h1>
+	<dl>
+		{foreach $app in $apps}
+			{call .app data="$app" /}
+		{/foreach}
+	</dl>
+{/template}
+
+/**
+ * @param name
+ * @param url
+ * @param? listed
+ * @param description
+*/
+{template .app}
+	{if $listed}
+    	<dt class="noir-app"><a href="{$url}">{$name}</a></dt>
+    	<dd>{$description}</dd>
+    {/if}
+{/template}

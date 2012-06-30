@@ -19,11 +19,11 @@ soy.widget.form.field = function(opt_data, opt_sb, opt_ijData) {
   output.append((opt_data.note || opt_data.noteHtml) ? '<span class="note">' + soy.$$escapeHtml(opt_data.note ? opt_data.note : '') + (opt_data.noteHtml ? opt_data.noteHtml : '') + '</span>' : '');
   if (opt_data.errors) {
     output.append('<ul class="errors">');
-    var errorList214 = opt_data.errors;
-    var errorListLen214 = errorList214.length;
-    for (var errorIndex214 = 0; errorIndex214 < errorListLen214; errorIndex214++) {
-      var errorData214 = errorList214[errorIndex214];
-      output.append('<li>', soy.$$escapeHtml(errorData214), '</li>');
+    var errorList232 = opt_data.errors;
+    var errorListLen232 = errorList232.length;
+    for (var errorIndex232 = 0; errorIndex232 < errorListLen232; errorIndex232++) {
+      var errorData232 = errorList232[errorIndex232];
+      output.append('<li>', soy.$$escapeHtml(errorData232), '</li>');
     }
     output.append('</ul>');
   }

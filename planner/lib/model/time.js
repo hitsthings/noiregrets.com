@@ -1,3 +1,4 @@
+/*jshint proto:true */
 var mongoose = require('mongoose');
 
 var timeData = require('../data/time');

@@ -1,0 +1,10 @@
+{namespace soy.feature}
+
+/**
+ * @param plans
+*/
+{template .plans}
+    {foreach $plan in $plans}
+    	{call soy.widget.plan data="$plan" /}
+    {/foreach}
+{/template}

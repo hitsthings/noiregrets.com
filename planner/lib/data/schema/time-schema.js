@@ -7,12 +7,12 @@ var singletonList = require('./mongo-helper').singletonList;
 /* Schemas */
 
 var CalendarValueSchema = exports.CalendarValueSchema = new Schema({
-    calendarType  : { type : String, enum : [ 'hour', 'day', 'weekday', 'month', 'year' ], required: true },
+    calendarType  : { type : String, 'enum' : [ 'hour', 'day', 'weekday', 'month', 'year' ], required: true },
     calendarIndex : { type : Number, required: true }
 });
 
 var TimeOffsetSchema = exports.TimeOffsetSchema = new Schema({
-    _type : {type : String, enum: [ 'CalendarTimeOffset', 'AbsoluteTimeOffset' ], required: true},
+    _type : {type : String, 'enum': [ 'CalendarTimeOffset', 'AbsoluteTimeOffset' ], required: true},
     millis : { type: Number },
     _calendarValue : [ CalendarValueSchema ],
     count          : { type: Number }
@@ -31,7 +31,7 @@ TimeOffsetSchema.path('_type').validate(function(type, fn) {
 
 
 var TimeSchema = exports.TimeSchema = new Schema({
-    _type : {type : String, enum: [ 'RelativeTime', 'AbsoluteTime' ], required: true},
+    _type : {type : String, 'enum': [ 'RelativeTime', 'AbsoluteTime' ], required: true},
     epochMillis : { type: Number },
     _offset : [ TimeOffsetSchema ]
 });

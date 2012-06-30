@@ -9,7 +9,7 @@ var sqlite = require('persistence/sqlite'),
 		
 		sqliteConnection.addListener('error', function(err) {
 			console.error(err.toString('utf8'));
-		})
+		});
 		
 		this.query = function() {
 			return sqliteConnection.query.apply(sqliteConnection, arguments);

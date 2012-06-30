@@ -3,7 +3,7 @@ var path = require('path'),
 
 var Configuration = require('../../lib/conf');
 
-var markdown = require('markdown').markdown;
+var markdown = require('./markdown');
 
 var render = require('../../lib/noir-util').render;
 var redirectGET = require('../../lib/express-util').redirectGET;
@@ -128,7 +128,13 @@ exports.createApp = function(callback, options) {
 	viewOptions.headHtml += style('css/layout.css');
 	viewOptions.headHtml += style('css/theme.css');
 	viewOptions.bottomHtml += script('lib/moment.min.js');
+	viewOptions.bottomHtml += script('js/markdown.js');
+
+	viewOptions.headHtml += style('lib/highlight.js/styles/arta.css');
+	viewOptions.bottomHtml += script('lib/highlight.js/highlight.pack.js');
+
 	viewOptions.bottomHtml += script('js/blog.js');
+
 
 	app.set('view options', viewOptions);
 
@@ -175,7 +181,7 @@ exports.createApp = function(callback, options) {
 				var date = new Date();
 
 				post.title = b.title;
-				post.bodyMarkdown = b.body;
+				post.bodyMarkdown = b.body.replace(/\r\n/g, '\n');
 				post.published = b.publish;
 				if (Boolean(b.publish) !== Boolean(post.publishDate)) {
 					post.publishDate = b.publish ? date : null;	
@@ -199,7 +205,7 @@ exports.createApp = function(callback, options) {
 
 		var postDescriptor = {
 			title : b.title,
-			bodyMarkdown : b.body,
+			bodyMarkdown : b.body.replace(/\r\n/g, '\n'),
 			published : !!b.publish,
 			publishDate : b.publish ? date : null,
 			lastEditDate : date,

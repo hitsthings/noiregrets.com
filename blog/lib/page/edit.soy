@@ -7,7 +7,29 @@
  * @param? published
  */
 {template .edit}
+    <style>{literal}
+        .form-layout {
+            display: table;
+        }
+        .form-layout > * {
+            display: table-cell;
+            text-align: left;
+        }
+        .preview {
+            margin-top: 16px;
+        }
+    </style>{/literal}
     <div class="form-layout">
+        <div>
+            <h2>Preview</h2>
+            <article class="preview">
+                <header>
+                    <h1><a href="#" id="titlePreview"></a></h1>
+                </header>
+                <section id="bodyPreview" style="width: 600px; min-height: 200px;">
+                </section>
+            </article>
+        </div>
         <form method="POST" action=""{if $id} data-post-id="{$id}"{/if}>
             <div class="field">
                 <label for="title">Title</label>
@@ -15,7 +37,7 @@
             </div>
             <div class="field">
                 <label for="body">Body</label>
-                <textarea id="body" name="body">{$bodyMarkdown ? $bodyMarkdown : ''}</textarea>
+                <textarea id="body" name="body" style="width: 450px; height: 200px;">{$bodyMarkdown ? $bodyMarkdown : ''}</textarea>
             </div>
             <div class="field">
                 <label for="publish">Publish?</label>

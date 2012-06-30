@@ -1,4 +1,5 @@
 var spawn = require('child_process').spawn;
+var fs= require('fs');
 
 module.exports = function(grunt) {
 
@@ -14,9 +15,9 @@ module.exports = function(grunt) {
         'lib/**/*.js',
         'test/**/*.js',
         'blog/lib/**/*.js',
-        'blog/test/**/*.js'//,
-//        'planner/lib/**/*.js',
-//        'planner/test/**/*.js'
+        'blog/test/**/*.js',
+        'planner/lib/**/*.js',
+        'planner/test/**/*.js'
       ]
     },
     jshint: {
@@ -54,6 +55,12 @@ module.exports = function(grunt) {
         src: ['blog/lib/**/*.soy']
       }
     },
+    browserify: {
+      all : {
+        src : ['./blog/lib/markdown'],
+        dest : 'blog/public/js/markdown.js'
+      }
+    },
     clean : {
       soyRoot : 'public/js/soy/',
       soyPlanner : 'planner/public/js/soy',
@@ -74,6 +81,16 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-soy');
   grunt.loadNpmTasks('grunt-clean');
 
+  grunt.registerMultiTask('browserify', 'Run browserify on a file', function() {
+    //var inputs = grunt.file.expandFiles(this.file.src);
+    var inputs = grunt.config(['browserify', this.target, 'src']);
+    var output = grunt.config(['browserify', this.target, 'dest']);
+    fs.writeFile(output, require('browserify')({
+      exports: ['require'],
+      require: inputs
+    }).bundle(), this.async());
+  });
+
   grunt.registerTask('run', 'Run noiregrets.com locally', function() {
     require('./web');
     this.async();
@@ -90,7 +107,7 @@ module.exports = function(grunt) {
   });
 
   // Default task.
-  grunt.registerTask('default', 'clean lint soy test');
-  grunt.registerTask('go', 'clean lint soy test devmode run');
+  grunt.registerTask('default', 'clean lint soy browserify test');
+  grunt.registerTask('go', 'clean lint soy browserify test devmode run');
 
 };
