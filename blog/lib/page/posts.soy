@@ -5,8 +5,6 @@
  */
 {template .posts}
 	<div class="posts-layout">
-		<h1>Blog</h1>
-
 		{foreach $post in $posts}
 			{call soy.widget.post data="$post"}
 				{param bodyHtml: $post.snippetHtml/}

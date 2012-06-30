@@ -7,7 +7,7 @@ if (typeof soy.page == 'undefined') { soy.page = {}; }
 
 soy.page.posts = function(opt_data, opt_sb) {
   var output = opt_sb || new soy.StringBuilder();
-  output.append('\t<div class="posts-layout"><h1>Blog</h1>');
+  output.append('\t<div class="posts-layout">');
   var postList24 = opt_data.posts;
   var postListLen24 = postList24.length;
   for (var postIndex24 = 0; postIndex24 < postListLen24; postIndex24++) {
