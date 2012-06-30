@@ -106,6 +106,48 @@ module.exports = function(grunt) {
     this.async();
   });
 
+  grunt.registerTask('deploy', 'Switch to the deploy branch, push, and switch back', function() {
+    var proc, out = '';
+
+    var next = this.async();
+
+    function pipeAll(proc) {
+      proc.stdout.pipe(process.stdout);
+      proc.stderr.pipe(process.stderr);
+      return proc;
+    }
+
+    proc = spawn('git', ['branch']);
+    proc.stdout.on('data', function(data) { out += data; });
+    proc.stdout.on('end', function() {
+      var newline, current, branch;
+      if (out[0] === '*') {
+        current = -1;
+      } else {
+        current = out.indexOf('\n*');
+      }
+      if (!~current) {
+        return next(new Error("Current branch could not be determined."));
+      }
+
+      current++;
+
+      newline = out.indexOf('\n', current);
+      branch = out.substring(current + 2, ~newline ?  newline : undefined);
+      console.log('Current branch is ' + branch);
+
+      pipeAll(spawn('git', ['checkout', 'deploy'])).on('exit', function() {
+        pipeAll(spawn('git', ['merge', branch])).on('exit', function() {
+          pipeAll(spawn('git', ['push'])).on('exit', function() {
+            pipeAll(spawn('git', ['checkout', branch])).on('exit', function() {
+              next();
+            });
+          });
+        });
+      });
+    });
+  });
+
   // Default task.
   grunt.registerTask('default', 'clean lint soy browserify test');
   grunt.registerTask('go', 'clean lint soy browserify test devmode run');
