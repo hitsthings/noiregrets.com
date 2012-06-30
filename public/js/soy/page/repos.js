@@ -8,7 +8,7 @@ if (typeof soy.page == 'undefined') { soy.page = {}; }
 soy.page.repos = function(opt_data, opt_sb, opt_ijData) {
   var output = opt_sb || new soy.StringBuilder();
   output.append('\n<style>\n.github-widget {\n    margin-top: 30px;\n}\n\n.github-widget .github-box .link {\n    margin-top: 1em;\n}\n</style>\n<h1>Libraries and Tools</h1>');
-  var repoList140 = ['soy-grunt-task', 'zoneinfo-server'];
+  var repoList140 = ['soy-grunt-task', 'grunt-heroku-deploy', 'zoneinfo-server'];
   var repoListLen140 = repoList140.length;
   for (var repoIndex140 = 0; repoIndex140 < repoListLen140; repoIndex140++) {
     var repoData140 = repoList140[repoIndex140];
