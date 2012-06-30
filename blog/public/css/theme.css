@@ -52,6 +52,11 @@ article > section {
 	line-height: 2em;
 }
 
+article > section p > img {
+	display: block;
+	margin: auto;
+}
+
 article > section ul {
 	margin-left: 32px;
 }
