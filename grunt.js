@@ -75,11 +75,15 @@ module.exports = function(grunt) {
         files: '<config:lint.files>',
         tasks: 'default'
       }
+    },
+    'heroku-deploy' : {
+      production : {}
     }
   });
 
   grunt.loadNpmTasks('grunt-soy');
   grunt.loadNpmTasks('grunt-clean');
+  grunt.loadNpmTasks('grunt-heroku-deploy');
 
   grunt.registerMultiTask('browserify', 'Run browserify on a file', function() {
     //var inputs = grunt.file.expandFiles(this.file.src);
@@ -104,48 +108,6 @@ module.exports = function(grunt) {
     spawn('grunt.cmd', ['watch:soy']);
     spawn('mongod');
     this.async();
-  });
-
-  grunt.registerTask('deploy', 'Switch to the deploy branch, push, and switch back', function() {
-    var proc, out = '';
-
-    var next = this.async();
-
-    function pipeAll(proc) {
-      proc.stdout.pipe(process.stdout);
-      proc.stderr.pipe(process.stderr);
-      return proc;
-    }
-
-    proc = spawn('git', ['branch']);
-    proc.stdout.on('data', function(data) { out += data; });
-    proc.stdout.on('end', function() {
-      var newline, current, branch;
-      if (out[0] === '*') {
-        current = -1;
-      } else {
-        current = out.indexOf('\n*');
-      }
-      if (!~current) {
-        return next(new Error("Current branch could not be determined."));
-      }
-
-      current++;
-
-      newline = out.indexOf('\n', current);
-      branch = out.substring(current + 2, ~newline ?  newline : undefined);
-      console.log('Current branch is ' + branch);
-
-      pipeAll(spawn('git', ['checkout', 'deploy'])).on('exit', function() {
-        pipeAll(spawn('git', ['merge', branch])).on('exit', function() {
-          pipeAll(spawn('git', ['push'])).on('exit', function() {
-            pipeAll(spawn('git', ['checkout', branch])).on('exit', function() {
-              next();
-            });
-          });
-        });
-      });
-    });
   });
 
   // Default task.
