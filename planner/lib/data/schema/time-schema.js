@@ -21,9 +21,9 @@ singletonList(TimeOffsetSchema, '_calendarValue', 'calendarValue');
 TimeOffsetSchema.path('_type').validate(function(type, fn) {
     switch(type) {
         case 'AbsoluteTimeOffset':
-            return fn(this.millis != null);
+            return fn(this.millis !== null && !this._calendarValue.length       && this.count === null);
         case 'CalendarTimeOffset':
-            return fn(this._calendarValue.length && this.count != null);
+            return fn(this.millis === null &&  this._calendarValue.length === 1 && this.count !== null);
         default:
             return fn(false);
     }
@@ -44,9 +44,9 @@ singletonList(TimeSchema, '_offset', 'offset');
 TimeSchema.path('_type').validate(function(type, fn) {
     switch(type) {
         case 'AbsoluteTime':
-            return fn(this.epochMillis != null);
+            return fn(this.epochMillis !== null && !this._anchor.length &&     !this._offset.length);
         case 'RelativeTime':
-            return fn(this._anchor.length && this._offset.length);
+            return fn(this.epochMillis === null && /* this._anchor.length && */ this._offset.length === 1);
         default:
             return fn(false);
     }

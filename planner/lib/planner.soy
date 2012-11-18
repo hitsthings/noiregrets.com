@@ -3,12 +3,71 @@
 /**
 */
 {template .planner}
+Avoiding error. Forget what I was doing here.	
 {/template}
 
 /**
+*/
+{template .occurrence}
+{/template}
+
+/**
+ * @param calendarTypes
+ * @param calendarValuesByType
  */
 {template .createPlanForm}
 	<form method="post" action="" id="create_form">
+
+		<ul class="occurrences">
+			<li>
+				<fieldset>
+					<legend>Occurrence</legend>
+
+					<label for="new_occurrence_type_abs">On a specific day and time:</label>
+					<input id="new_occurrence_type_abs" type="radio" name="new_occurrence_type" value="AbsoluteTime" />
+					
+					<input id="new_occurrence_datetime" type="datetime" name="new_occurrence_datetime" value="" />
+
+					// -----
+
+					<input id="new_occurrence_type_rel" type="radio" name="new_occurrence_type" value="RelativeTime" />
+
+					<label for="new_occurrence_type_rel">The{sp}
+					<select name="new_occurrence_rel_ordinal">
+						<option value="1">next</option>
+						<option value="2">2nd</option>
+						<option value="3">3rd</option>
+						<option value="4">4th</option>
+						<option value="5">5th</option>
+						<option value="6">6th</option>
+						<option value="7">7th</option>
+						<option value="8">8th</option>
+						<option value="9">9th</option>
+						<option value="-1">last</option>
+						<option value="-2">2nd last</option>
+						<option value="-3">3rd last</option>
+					</select>{sp}
+					<select name="new_occurence_unit">
+						{foreach $calendarType in $calendarTypes}
+							<optgroup value="{$calendarType.value}">{$calendarType.displayName}</optgroup>
+							{foreach $calendarValue in $calendarValuesByType[$calendarType.value]}
+								<option value="{$calendarType.value}"></option>
+							{/foreach}
+						{/foreach}
+					</select> since the last occurrence.</label>
+				</fieldset>
+			</li>
+		</ul>
+		<ul class="recurrences">
+			<li>
+				<fieldset>
+					<legend>Recurrence</legend>
+					Repeat every
+					
+				</fieldset>
+			</li>
+		</ul>
+
 		<div class="field">
 			<label for="plan_name">Subject</label>
 			<input type="text" name="plan_name" id="plan_name" />

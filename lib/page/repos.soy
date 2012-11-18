@@ -18,8 +18,12 @@
 
     <h1>Libraries and Tools</h1>
 
+    {foreach $repo in ['meat', 'bitbucket-widget']}
+        {call .bitbucketRepo}{param repoName : $repo /}{/call}
+    {/foreach}
+
     {foreach $repo in ['soy-grunt-task', 'grunt-heroku-deploy', 'zoneinfo-server']}
-        {call .repo}{param repoName : $repo /}{/call}
+        {call .githubRepo}{param repoName : $repo /}{/call}
     {/foreach}
 
 {/template}
@@ -27,6 +31,13 @@
 /**
  * @param repoName
 */
-{template .repo}
+{template .githubRepo}
     <div class="github-widget" data-repo="hitsthings/{$repoName}"></div>
+{/template}
+
+/**
+ * @param repoName
+ */
+{template .bitbucketRepo}
+    <div class="bitbucket-widget" data-repo="aahmed/{$repoName}"></div>
 {/template}

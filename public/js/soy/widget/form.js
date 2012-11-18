@@ -10,20 +10,20 @@ soy.widget.form = function(opt_data, opt_sb, opt_ijData) {
   output.append('<form action="', soy.$$escapeHtml(opt_data.action ? opt_data.action : ''), '" method="', soy.$$escapeHtml(opt_data.method ? opt_data.method : 'POST'), '">');
   if (opt_data.errors && opt_data.errors['global']) {
     output.append('<ul class="errors">');
-    var errorList249 = opt_data.errors['global'];
-    var errorListLen249 = errorList249.length;
-    for (var errorIndex249 = 0; errorIndex249 < errorListLen249; errorIndex249++) {
-      var errorData249 = errorList249[errorIndex249];
-      output.append('<li>', soy.$$escapeHtml(errorData249), '</li>');
+    var errorList257 = opt_data.errors['global'];
+    var errorListLen257 = errorList257.length;
+    for (var errorIndex257 = 0; errorIndex257 < errorListLen257; errorIndex257++) {
+      var errorData257 = errorList257[errorIndex257];
+      output.append('<li>', soy.$$escapeHtml(errorData257), '</li>');
     }
     output.append('</ul>');
   }
   if (opt_data.fields) {
-    var fieldList257 = opt_data.fields;
-    var fieldListLen257 = fieldList257.length;
-    for (var fieldIndex257 = 0; fieldIndex257 < fieldListLen257; fieldIndex257++) {
-      var fieldData257 = fieldList257[fieldIndex257];
-      soy.widget.form.field(soy.$$augmentData(fieldData257, {value: fieldData257.value ? fieldData257.value : opt_data.values ? opt_data.values[fieldData257.id] : null, errors: opt_data.errors ? opt_data.errors[fieldData257.id] : null}), output, opt_ijData);
+    var fieldList265 = opt_data.fields;
+    var fieldListLen265 = fieldList265.length;
+    for (var fieldIndex265 = 0; fieldIndex265 < fieldListLen265; fieldIndex265++) {
+      var fieldData265 = fieldList265[fieldIndex265];
+      soy.widget.form.field(soy.$$augmentData(fieldData265, {value: fieldData265.value ? fieldData265.value : opt_data.values ? opt_data.values[fieldData265.id] : null, errors: opt_data.errors ? opt_data.errors[fieldData265.id] : null}), output, opt_ijData);
     }
   }
   output.append((opt_data.fieldsHtml) ? opt_data.fieldsHtml : '', '<div class="buttons">', opt_data.buttonsHtml, '</div></form></div>');
