@@ -130,5 +130,5 @@ module.exports = function(grunt) {
 
   // Default task.
   grunt.registerTask('default', 'clean lint soy less browserify test devmode run');
-
+  grunt.registerTask('heroku', 'clean soy less browserify');
 };
