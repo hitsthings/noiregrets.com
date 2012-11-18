@@ -2,17 +2,18 @@
     display: table;
     position: relative;
     width: 100%;
-}
-#header > div {
-    display: table-cell;
-    text-align: center;
-}
 
-#header > div:first-child {
-    text-align: left;
-}
-#header > div:last-child {
-    text-align: right;
+    > div {
+        display: table-cell;
+        text-align: center;
+
+        &:first-child {
+            text-align: left;
+        }
+        &:last-child {
+            text-align: right;
+        }
+    }
 }
 
 form > .field > .value {

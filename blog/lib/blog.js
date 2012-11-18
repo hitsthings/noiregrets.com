@@ -142,16 +142,14 @@ exports.createApp = function(callback, options) {
 		'"></script>';
 	}
 
-	viewOptions.headHtml += style('css/layout.css');
-	viewOptions.headHtml += style('css/theme.css');
+	viewOptions.headHtml += style('layout.css');
+	viewOptions.headHtml += style('theme.css');
 	viewOptions.bottomHtml += script('lib/moment.min.js');
 	viewOptions.bottomHtml += script('js/markdown.js');
-
 	viewOptions.headHtml += style('lib/highlight.js/styles/arta.css');
+
 	viewOptions.bottomHtml += script('lib/highlight.js/highlight.pack.js');
-
 	viewOptions.bottomHtml += script('js/blog.js');
-
 
 	app.set('view options', viewOptions);
 

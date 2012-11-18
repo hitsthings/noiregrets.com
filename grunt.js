@@ -55,6 +55,17 @@ module.exports = function(grunt) {
         src: ['blog/lib/**/*.soy']
       }
     },
+    less : {
+      root : {
+        files: { "public/*.css": "lib/**/*.less" }
+      },
+      blog : {
+        files: { "blog/public/*.css": "blog/lib/**/*.less" }
+      },
+      planner : {
+        files: { "planner/public/*.css": "planner/lib/**/*.less" }
+      }
+    },
     browserify: {
       all : {
         src : ['./blog/lib/markdown'],
@@ -68,8 +79,20 @@ module.exports = function(grunt) {
     },
     watch : {
       soy : {
-        files : '**/*.soy',
+        files : [
+          '<config:soy.root.src>',
+          '<config:soy.blog.src>',
+          '<config:soy.planner.src>'
+        ],
         tasks : 'soy'
+      },
+      less : {
+        files : [
+          "lib/**/*.less",
+          "blog/lib/**/*.less",
+          "planner/lib/**/*.less"
+        ],
+        tasks : 'less'
       },
       lint : {
         files: '<config:lint.files>',
@@ -84,6 +107,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-soy');
   grunt.loadNpmTasks('grunt-clean');
   grunt.loadNpmTasks('grunt-heroku-deploy');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   grunt.registerMultiTask('browserify', 'Run browserify on a file', function() {
     //var inputs = grunt.file.expandFiles(this.file.src);
@@ -104,14 +128,7 @@ module.exports = function(grunt) {
     process.env.NODE_ENV='development';
   });
 
-  grunt.registerTask('devstart', 'Run the mongo test db and watch:soy in another process', function() {
-    spawn('grunt.cmd', ['watch:soy']);
-    spawn('mongod');
-    this.async();
-  });
-
   // Default task.
-  grunt.registerTask('default', 'clean lint soy browserify test');
-  grunt.registerTask('go', 'clean lint soy browserify test devmode run');
+  grunt.registerTask('default', 'clean lint soy less browserify test devmode run');
 
 };

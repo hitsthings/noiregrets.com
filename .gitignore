@@ -1,2 +1,6 @@
 .npmignore
 node_modules
+public/*.css
+public/js/soy/*
+**/public/*.css
+**/public/js/soy/*
