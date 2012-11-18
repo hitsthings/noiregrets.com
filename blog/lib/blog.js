@@ -28,7 +28,9 @@ function getUrl(post, basepath) {
 		path += '/';
 	}
 
-	var publishDateISO = post.publishDate.toISOString();
+	var date = post.publishDate || post.lastEditDate;
+
+	var publishDateISO = date.toISOString();
 	publishDateISO = publishDateISO.substring(0, publishDateISO.indexOf('T'));
 	path += publishDateISO.replace(/-/g, '/');
 
@@ -55,7 +57,7 @@ function toPostView(post, basepath) {
 }
 
 function extractBlogPost(req, res, next) {
-	var publishDate = new Date(
+	var blogDate = new Date(
 		req.params.year,
 		req.params.month - 1,
 		req.params.day);
@@ -64,16 +66,31 @@ function extractBlogPost(req, res, next) {
 
 	var dayMillis = 24 * 60 * 60 * 1000;
 
-	var query = Post
-		.where('publishDate').gte(publishDate)
-		.where('publishDate').lt(new Date(+publishDate + dayMillis))
+	Post.where('publishDate').gte(blogDate)
+		.where('publishDate').lt(new Date(+blogDate + dayMillis))
 		.where('md5Id').regex(new RegExp("^" + idStart))
 		.findOne(function(err, post) {
 			if (err) {
 				return next(err);
 			}
+
 			if (!post) {
-				return res.send(404);
+				Post.where('lastEditDate').gte(blogDate)
+					.where('lastEditDate').lt(new Date(+blogDate + dayMillis))
+					.where('md5Id').regex(new RegExp("^" + idStart))
+					.findOne(function(err, post) {
+						if (err) {
+							return next(err);
+						}
+
+						if (!post) {
+							return res.send(404);
+						}
+
+						req.blogPost = post;
+						next();
+					});
+				return;
 			}
 
 			req.blogPost = post;

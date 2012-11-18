@@ -80,3 +80,8 @@ article li > code {
 	padding: 0 3px;
 	white-space: nowrap;
 }
+
+article blockquote {
+	font-size: 2em;
+	font-style: italic;
+}
