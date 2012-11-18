@@ -23,7 +23,8 @@
   ],
   "main": "lib/noiregrets.com",
   "engines": {
-    "node": "0.8.x"
+    "node": "0.8.x",
+    "npm" : "1.1.x"
   },
   "scripts": {
     "test": "grunt test"
