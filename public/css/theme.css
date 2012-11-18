@@ -23,6 +23,10 @@ p,
 #main ul {
 	font-size: 1.4em;
 }
+#main ul p,
+#main p ul {
+	font-size: 1em;
+}
 
 * + p {
 	margin-top: 0.6em;
