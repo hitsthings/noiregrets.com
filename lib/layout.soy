@@ -2,6 +2,7 @@
 
 /**
  * @param body
+ * @param bodyClass
  * @param? headHtml
  * @param? bottomHtml
  */
@@ -35,7 +36,7 @@
 		</script>
 		{/literal}
 	</head>
-	<body>
+	<body{if $bodyClass} class="{$bodyClass}"{/if}>
 		<div id="page">
 			<header id="header" role="banner">
 				<div>
@@ -44,7 +45,7 @@
 						<ul>
 							<li><a href="/blog">Blog</a></li>
 							//<li><a href="/apps">Apps</a></li>
-							<li><a href="/repos">Libs</a></li>
+							<li><a href="/repos">Libraries and Tools</a></li>
 						</ul>
 					</nav>
 				</div>

@@ -128,7 +128,7 @@ module.exports = function(grunt) {
     process.env.NODE_ENV='development';
   });
 
-  // Default task.
-  grunt.registerTask('default', 'clean lint soy less browserify test devmode run');
+  grunt.registerTask('go', 'clean lint soy less browserify test devmode run');
+  grunt.registerTask('default', 'clean lint soy less browserify test');
   grunt.registerTask('heroku', 'clean soy less browserify');
 };
